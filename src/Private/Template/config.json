@@ -1,0 +1,7 @@
+{
+    "Port": 8080,
+    "MaxRunspaces": 5,
+    "UseHTTPS": "false",
+    "AuthenticationMethod": "Anonymous",
+    "WaitForFinish": "false"
+}

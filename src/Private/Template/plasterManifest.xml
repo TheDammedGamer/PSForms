@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plasterManifest schemaVersion="1.1" templateType="Project" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>NewPSFormsSite</name>
+    <id>a125b811-03c2-4989-a5e3-063012e25b38</id>
+    <version>1.0.1</version>
+    <title>New PSForms Site</title>
+    <description>Createa a Skeleton site for the PSFoms Module.</description>
+    <author>The Dammed Gamer</author>
+    <tags>Polaris, Web, Skeleton, WebForm</tags>
+  </metadata>
+  <parameters>
+    <parameter name="SiteTitle" type="text" prompt="What is the Title of the Site to display in the navbar" />
+    <parameter name="FooterText" type="text" prompt="What Text would you like to display in the Footer" />
+  </parameters>
+  <content>
+    <message>Scaffolding PSForms Site</message>
+
+    <requireModule name="Polaris" minimumVersion="0.2.0" message="Without Polaris you cannot serve any PSForm Template or generated form on the internet. Install with 'Install-Module Polaris'." />
+    
+    <templateFile source='Views\Layout.json' destination=''/>
+    <file source="Views\Layout.ps1" destination="" />
+    
+    <file source="Scripts\RouteImport.ps1" destination="Scripts\RouteImport.ps1" />
+    <file source="Static\default.css" destination="Static\default.css" />
+    <file source="config.json" destination="config.json" />
+    <file source="Polaris.Start.ps1" destination="Start.ps1" />
+    <file source="Polaris.Stop.ps1" destination="Stop.ps1" />
+    <file source="" destination="Cards\" />
+    <file source="" destination="Approval\" />
+
+    <message>The PSForms Site has been scaffolded.</message>
+
+    <message>You can Run New-PolarisFormHomePage to Include a Home Page.</message>
+  </content>
+</plasterManifest>

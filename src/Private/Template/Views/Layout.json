@@ -1,0 +1,18 @@
+{
+    "Title": "<%=$PLASTER_PARAM_SiteTitle%>",
+    "FooterText": "<%=$PLASTER_PARAM_FooterText%>",
+    "NavItems": [
+        {
+            "Href": "/",
+            "Content": "Home"
+        },
+        {
+            "Href": "/about",
+            "Content": "About"
+        },
+        {
+            "Href": "http://www.servicedesk.example.org",
+            "Content": "IT Service Desk"
+        }
+    ]
+}
