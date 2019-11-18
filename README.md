@@ -2,7 +2,7 @@
 
 ## Overview
 
-A Simple way to generate Forms to via PowerShell, [PSHTML](1) and run them with the [Polaris Web Server](2).
+A Simple way to generate Forms to via PowerShell, [PSHTML][1] and run them with the [Polaris Web Server][2].
 
 ## Installation
 
