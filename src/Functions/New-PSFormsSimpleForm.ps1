@@ -34,7 +34,7 @@ function New-PSFormsSimpleForm {
 
     begin {
         # Ensure The Skeleton command has been run
-        if (!(Test-Path "$SiteRoot\Start.ps1") -or !(Test-Path "$SiteRoot\Views\Layout.ps1") -or !(Test-Path "$SiteRoot\Static")) {
+        if (!(Test-Path -Path "$SiteRoot\Start.ps1") -or !(Test-Path -Path "$SiteRoot\Views\Layout.ps1") -or !(Test-Path -Path "$SiteRoot\Static")) {
             Write-Error -Message "Please Ensure that the 'New-PSFomsSite' Command has been run in the Site Root directory." -ErrorAction Stop
         }
         
@@ -63,7 +63,7 @@ function New-PSFormsSimpleForm {
                 button -Content "Submit" -Class "btn btn-primary" -Attributes @{type="submit"}
             }
         }
-        $Form | Set-Content -Path $(Join-Path $SiteRoot "Views" "$Name.Form.htm") | Out-Null
+        $Form | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Form.htm") | Out-Null
         # Generated Form
 
         # Generate Sucess Content
@@ -71,7 +71,7 @@ function New-PSFormsSimpleForm {
             Div -Class "alert alert-light" -Attributes @{role="alert"} -Content "Form Submitted Sucessfully"
             p -Content $SuccessMsg
         }
-        $SucessContent | Set-Content -Path $(Join-Path $SiteRoot "Views" "$Name.Success.htm") | Out-Null
+        $SucessContent | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Success.htm") | Out-Null
         # Generated Sucess Content
 
         # Generate Failure Content
@@ -79,7 +79,7 @@ function New-PSFormsSimpleForm {
             Div -Class "alert alert-danger" -Attributes @{role="alert"} -Content "Form Submission Denied"
             p -Content ":reason:" # Will be replaced at runtime as the reason should be changed.
         }
-        $FailureContent | Set-Content -Path $(Join-Path $SiteRoot "Views" "$Name.Failure.htm") | Out-Null
+        $FailureContent | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Failure.htm") | Out-Null
         # Generated Failure Content
 
         # Generate Error Content
@@ -87,7 +87,7 @@ function New-PSFormsSimpleForm {
             Div -Class "alert alert-danger" -Attributes @{role="alert"} -Content "Form not Submitted, an Error Occured."
             p -Content $ErrorMsg
         }
-        $ErrorContent | Set-Content -Path $(Join-Path $SiteRoot "Views" "$Name.Error.htm") | Out-Null
+        $ErrorContent | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Error.htm") | Out-Null
         # Generated Error Content
 
         # Generate Card
@@ -98,21 +98,21 @@ function New-PSFormsSimpleForm {
                 a -Class "card-link" -href "/$Name" -Content "Go to the Form"
             }
         }
-        $BootstrapCard | Set-Content -Path $(Join-Path $SiteRoot "Cards" "$Name.htm") | Out-Null
+        $BootstrapCard | Set-Content -Path $(Join-Path -Path $SiteRoot "Cards" "$Name.htm") | Out-Null
         # Generated Card
 
         # Generate Template Scripts
-        $TemplateFilesParent = Join-Path $PSScriptRoot "Private"
+        $TemplateFilesParent = Join-Path -Path $PSScriptRoot "Private"
         
-        $FormPath = Join-Path $TemplateFilesParent "Simple.FormName.Form.ps1"
-        $FormOutPath = Join-Path $SiteRoot "Scripts" "$Name.Form.ps1"
+        $FormPath = Join-Path -Path $TemplateFilesParent "Simple.FormName.Form.ps1"
+        $FormOutPath = Join-Path -Path $SiteRoot "Scripts" "$Name.Form.ps1"
                 
         $Form = Get-Content -Path $FormPath
         $Form = $Form.Replace(':FormName:', $Name).Replace(':Title:', $Header)
         Set-Content -Path $FormOutPath -Value $Form | Out-Null
         
-        $FormPath = Join-Path $TemplateFilesParent "Simple.FormName.Submit.ps1"
-        $FormOutPath = Join-Path  $SiteRoot "Scripts" "$Name.Submit.ps1"
+        $FormPath = Join-Path -Path $TemplateFilesParent "Simple.FormName.Submit.ps1"
+        $FormOutPath = Join-Path -Path $SiteRoot "Scripts" "$Name.Submit.ps1"
         
         $Form = Get-Content -Path $FormPath
         $Form = $Form.Replace(':FormName:', $Name).Replace(':Title:', $Header)
@@ -124,7 +124,7 @@ function New-PSFormsSimpleForm {
         # Update RouteImport.ps1
         $RouteImport = @( [string]::Format("# {0} Route Import", $Name), [string]::Format(". .\{0}.Submit.ps1", $Name), [string]::Format(". .\{0}.Form.ps1", $Name) )
         
-        Add-Content -Value $RouteImport -Path $(Join-Path $SiteRoot "Scripts" "RouteImport.ps1") | Out-Null
+        Add-Content -Value $RouteImport -Path $(Join-Path -Path $SiteRoot "Scripts" "RouteImport.ps1") | Out-Null
         # Updated RouteImport.ps1
     }
 

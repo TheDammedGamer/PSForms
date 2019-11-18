@@ -11,7 +11,7 @@ function New-PSFormsSite {
 
     begin {
         Import-Module Plaster
-        $TemplatePath = Join-Path $PSScriptRoot "Private" "Template"
+        $TemplatePath = Join-Path -Path $PSScriptRoot "Private" "Template"
     }
 
     process {

@@ -2,27 +2,19 @@
 
 ## Overview
 
-A Simple way to generate Forms to run via PowerSehll and Polaris.
+A Simple way to generate Forms to via PowerShell, [PSHTML](1) and run them with [Polaris](2).
 
 ## Installation
 
 ## Examples
 
+## [Changelog](Changelog.md)
 
 
 ## To Do
-- [x] Define Input PS Class
-- [x] Define TextBox PS Class
-- [x] `New-PSFomsInput`
-- [x] `New-PSFormTextBox`
-- [x] `New-PolarisSimpleForm -Header "Change Contact Details" -Content @([PSFomsInputTextBox]$Description, [PSFomsInput]$Input1, [PSFomsInput]$Input2, [PSFomsInput]$Input3,`  
-` [PSFomsInput]$Input5,[PSFomsInput]$Input5) -ProcessResult @{.\somefile.ps1} -SucessMsg $sucessMessage -FailureMsg $failMessage -Footer $FooterHTML -ErrorMsg $CustomErrorMsg`
-- [x] Simple bootstrap style css served from the static folder.
-- [x] Generate Function Templates
-- [x] `New-PSFomsSite` - Generates the Site Skeleton, maybe using Plaster
 - [ ] `New-PSFomsHomePage` - Adds an optional homepage template that will be used as the default route endpoint e.g. `http:://servername:port/` && `http:://servername:port/index`
-- [x] Rename Module to PSWebForms
-- [x] Generate a card definition for the homepage, store it in `.\Cards\$FormName.htm`
+
+
 
 ## Ideas
 Aproval requires a GUID generated at request time which relates to a json file (e.g. `.\Approval\UpdateMobileNumber.c0aab650-f29c-4870-b0fb-4b0b19d4d449.json`) where the data needed for the script will be stored. This file will be created within the submit script.
@@ -33,7 +25,7 @@ Optionally Add a Prefix
 - `/$FormName/Submit` or `/PSWebForms/$FormName/Submit` = The enpoint to submit the form
 - `/$FormName/Approve?request=$GUID` or `/PSWebForms/$FormName/Approve?request=$GUID` = Optional Endpoint for when needing form approval
 
-### Template Layout:
+### Site Layout:
 - `.\Views\` - ps1 template files used to genrate the layout files.
     - `.\Views\layout.ps1` - Contains the basic layout to be customised, intially generated but never updated if found. Requires Arguments for content and Page Title
     - `.\Views\$FormName.Form.htm` - The form definition stored as HTML
@@ -54,7 +46,7 @@ Optionally Add a Prefix
 - `.\Stop.ps1` - An intially generated file to stop the Polaris Server and can optionally clean anything up as required
 - `.\Config.json` - Provides a nice place to store some config settings that will be read into `.\start.ps1`
 
-## License
+## License - MIT License
 
 Copyright 2019 Liam Townsend
 
@@ -63,3 +55,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+[1][https://github.com/Stephanevg/PSHTML]
+[2][https://github.com/PowerShell/Polaris]

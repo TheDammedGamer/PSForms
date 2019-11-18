@@ -6,8 +6,7 @@ function New-PSFormsParagraph {
         [ValidateNotNullOrEmpty()]
         [string] $Text,
         # p tag attribute
-        [Parameter(Mandatory= $True, Position=1)]
-        [ValidateNotNullOrEmpty()]
+        [Parameter(Mandatory= $false, Position=1)]
         [hashtable] $Attributes = @{}
     )
     
@@ -18,7 +17,7 @@ function New-PSFormsParagraph {
     }
     
     process {
-        $item = [PSFormsParagraph]::new($Text)
+        $item = [PSFormsClassLib.PSFormsParagraph]::new($Text)
         $item.Attributes = $Attributes
         Write-Object $item
     }

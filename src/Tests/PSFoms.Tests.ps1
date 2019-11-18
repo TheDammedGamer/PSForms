@@ -1,5 +1,9 @@
-$ModuleManifestName = 'PSFoms.psd1'
-$ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
+$ModuleManifestName = 'PSForms.psd1'
+$ModuleManifestPath = ".\$ModuleManifestName"
+
+$ScriptAnalyzerSettingsPath = Join-Path $(Split-Path $(Get-Item .) -Parent) -ChildPath 'PSScriptAnalyzerSettings.psd1'
+
+$ScriptAnalyzerSettings = Import-PowerShellDataFile $ScriptAnalyzerSettingsPath
 
 Describe 'Module Manifest Tests' {
     It 'Passes Test-ModuleManifest' {
@@ -10,8 +14,8 @@ Describe 'Module Manifest Tests' {
 
 Describe -Tags 'PSSA' -Name 'Testing against PSScriptAnalyzer rules' {
     Context 'PSSA Standard Rules' {
-        $ScriptAnalyzerSettings = Get-Content -Path ".\PSScriptAnalyzerSettings.psd1" | Out-String | Invoke-Expression
-        $AnalyzerIssues = Invoke-ScriptAnalyzer -Path ".\PSFoms.psm1" -Settings ".\PSScriptAnalyzerSettings.psd1"
+        
+        $AnalyzerIssues = Invoke-ScriptAnalyzer -Path ".\PSForms.psm1" -Settings $ScriptAnalyzerSettingsPath
         $ScriptAnalyzerRuleNames = Get-ScriptAnalyzerRule | Select-Object -ExpandProperty RuleName
         forEach ($Rule in $ScriptAnalyzerRuleNames) {
             $Skip = @{Skip=$False}
