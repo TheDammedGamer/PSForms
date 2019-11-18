@@ -2,28 +2,48 @@
 
 ## Overview
 
-A Simple way to generate Forms to via PowerShell, [PSHTML](1) and run them with [Polaris](2).
+A Simple way to generate Forms to via PowerShell, [PSHTML](1) and run them with the [Polaris Web Server](2).
 
 ## Installation
 
+Currently, the only way is to build form source, I will be uploading to the PowerShell gallery shortly
+
 ## Examples
+
+``` PowerShell
+New-PSFormsSite -OutputPath 'D:\PSFormsSite\'
+
+$Content = @()
+
+$Content += New-PSFormsInput -Name "mobile" -DisplayName "Mobile Number" -InputType "tel" -ToolTip "Please enter your new mobile number."
+$Content += New-PSFormsInput -Name "homeSite" -DisplayName "Your Home Page" -InputType "url" -Placeholder "https://github.com/YourUsernameHere/"
+$Content += New-PSFormsInputTextBox -Name "bio" -DisplayName "Your Bio" -Rows 4 -Columns 10 -ToolTip "A Short bio to display on our internal staff directory."
+$Content += New-PSFormsInputMultipleChoice -Name "office" -DisplayName "Your Main Office Address" -ToolTip "If you work on multiple sites select the one that you spend the most time at." -Options @("34, Some Street, Town, Bedfordshire, LXO1 111", "39, Some Avenue, Leeds, West Yorkshire, LS1 111")
+
+New-PSFormsSimpleForm -Name "DetailsUpdate" -Header "Update your Details" -Description "Use this form to update your details in Outlook and the Staff Directory." -Content $Content -SucessMsg "Your Details have been updated, this may take up to 5 days to roll out to everyone in the organisation." -ErrorMsg "Something went wrong, Please contact the service Desk on 'Some Number' for assitance." -SiteRoot 'D:\PSFormsSite\'
+```
+
+The above example creates a new PSForms site with a simple form tto update people's contact detaisl. This example is missing the implmentation, which needs to be setup inside `D:\PSFormsSite\Scripts\DetailsUpdate.Submit.ps1` so that Polaris will process the result of the form.
+
+``` PowerShell
+D:\PSFormsSite\Start.ps1
+```
+The `Start.ps1` will start the Polaris Server accoding to the default settings in `config.json`
+
 
 ## [Changelog](Changelog.md)
 
-
 ## To Do
-- [ ] `New-PSFomsHomePage` - Adds an optional homepage template that will be used as the default route endpoint e.g. `http:://servername:port/` && `http:://servername:port/index`
-
+- [ ] `New-PSFomsHomePage` - Adds an optional homepage template that will be used as the default route endpoint e.g. `http:://servername:port/`
 
 
 ## Ideas
 Aproval requires a GUID generated at request time which relates to a json file (e.g. `.\Approval\UpdateMobileNumber.c0aab650-f29c-4870-b0fb-4b0b19d4d449.json`) where the data needed for the script will be stored. This file will be created within the submit script.
 
 ### Routes
-Optionally Add a Prefix
-- `/$FormName/` or `/PSWebForms/$FormName/` = The Form
-- `/$FormName/Submit` or `/PSWebForms/$FormName/Submit` = The enpoint to submit the form
-- `/$FormName/Approve?request=$GUID` or `/PSWebForms/$FormName/Approve?request=$GUID` = Optional Endpoint for when needing form approval
+- `/$FormName/`= The Form
+- `/$FormName/Submit` = The enpoint to submit the form
+- `/$FormName/Approve?request=$GUID` = Optional Endpoint for when needing form approval
 
 ### Site Layout:
 - `.\Views\` - ps1 template files used to genrate the layout files.

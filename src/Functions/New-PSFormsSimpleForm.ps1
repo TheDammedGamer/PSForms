@@ -2,32 +2,32 @@ function New-PSFormsSimpleForm {
     [CmdletBinding()]
     param (
         # Form Name
-        [Parameter(Mandatory=$true,Position=0)]
-        [ValidateScript({$_.Contains([System.IO.Path]::InvalidPathChars) -eq $true})]
+        [Parameter(Mandatory = $true, Position = 0)]
+        [ValidateScript( { $_.Contains([System.IO.Path]::InvalidPathChars) -eq $true })]
         [string]
         $Name,
         # Form Header
-        [Parameter(Mandatory=$true,Position=1)]
+        [Parameter(Mandatory = $true, Position = 1)]
         [string]
         $Header,
         # Form Description
-        [Parameter(Mandatory=$true,Position=2)]
+        [Parameter(Mandatory = $true, Position = 2)]
         [string]
         $Description,
         # Content Array of form content
-        [Parameter(Mandatory=$true,Position=3)]
+        [Parameter(Mandatory = $true, Position = 3)]
         [System.Object[]]
         $Content,
         # Success Message
-        [Parameter(Mandatory=$true,Position=4)]
+        [Parameter(Mandatory = $true, Position = 4)]
         [string]
         $SuccessMsg,
         # Error Message
-        [Parameter(Mandatory=$true,Position=5)]
+        [Parameter(Mandatory = $true, Position = 5)]
         [string[]]
         $ErrorMsg,
         # The Root Directory of the site Defaults to the Current Dir
-        [Parameter(Mandatory=$false, Position=6)]
+        [Parameter(Mandatory = $false, Position = 6)]
         [string]
         $SiteRoot = "."
     )
@@ -60,7 +60,7 @@ function New-PSFormsSimpleForm {
                 foreach ($element in $Content) {
                     ConvertTo-PSFormsPSHTML -GenericObject $element
                 }
-                button -Content "Submit" -Class "btn btn-primary" -Attributes @{type="submit"}
+                button -Content "Submit" -Class "btn btn-primary" -Attributes @{type = "submit" }
             }
         }
         $Form | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Form.htm") | Out-Null
@@ -68,7 +68,7 @@ function New-PSFormsSimpleForm {
 
         # Generate Sucess Content
         $SucessContent = Div -class "response-container" -Content {
-            Div -Class "alert alert-light" -Attributes @{role="alert"} -Content "Form Submitted Sucessfully"
+            Div -Class "alert alert-light" -Attributes @{role = "alert" } -Content "Form Submitted Sucessfully"
             p -Content $SuccessMsg
         }
         $SucessContent | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Success.htm") | Out-Null
@@ -76,7 +76,7 @@ function New-PSFormsSimpleForm {
 
         # Generate Failure Content
         $FailureContent = Div -class "response-container" -Content {
-            Div -Class "alert alert-danger" -Attributes @{role="alert"} -Content "Form Submission Denied"
+            Div -Class "alert alert-danger" -Attributes @{role = "alert" } -Content "Form Submission Denied"
             p -Content ":reason:" # Will be replaced at runtime as the reason should be changed.
         }
         $FailureContent | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Failure.htm") | Out-Null
@@ -84,21 +84,14 @@ function New-PSFormsSimpleForm {
 
         # Generate Error Content
         $ErrorContent = Div -class "response-container" -Content {
-            Div -Class "alert alert-danger" -Attributes @{role="alert"} -Content "Form not Submitted, an Error Occured."
+            Div -Class "alert alert-danger" -Attributes @{role = "alert" } -Content "Form not Submitted, an Error Occured."
             p -Content $ErrorMsg
         }
         $ErrorContent | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Error.htm") | Out-Null
         # Generated Error Content
 
         # Generate Card
-        $BootstrapCard = Div -Class "card card-width" -Content {
-            Div -Class "card-body" -Content {
-                h5 -Class "card-title" -Content $Header
-                p -Class "card-text" -Content $Description
-                a -Class "card-link" -href "/$Name" -Content "Go to the Form"
-            }
-        }
-        $BootstrapCard | Set-Content -Path $(Join-Path -Path $SiteRoot "Cards" "$Name.htm") | Out-Null
+        New-PSFormsBootstrapCard -Header $Header -Description $Description -Name $Name -SiteRoot $SiteRoot
         # Generated Card
 
         # Generate Template Scripts

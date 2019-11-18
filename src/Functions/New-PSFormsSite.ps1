@@ -15,7 +15,7 @@ function New-PSFormsSite {
     }
 
     process {
-        Invoke-Plaster -TemplatePath $TemplatePath -DestinationPath $OutputPath -Verbose
+        Invoke-Plaster -TemplatePath $TemplatePath -DestinationPath $OutputPath
     }
 
     end {
