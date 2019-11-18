@@ -34,15 +34,15 @@ function New-PSFormsSimpleForm {
 
     begin {
         # Ensure The Skeleton command has been run
-        if (Test-Path $(Join-Path $SiteRoot "Start.ps1") -eq $false) {
-            throw "Please Ensure that the 'New-PSFomsSite' Command has been run in the Site Root directory."
+        if (!(Test-Path "$SiteRoot\Start.ps1") -or !(Test-Path "$SiteRoot\Views\Layout.ps1") -or !(Test-Path "$SiteRoot\Static")) {
+            Write-Error -Message "Please Ensure that the 'New-PSFomsSite' Command has been run in the Site Root directory." -ErrorAction Stop
         }
         
         # Check for Duplicate content names to ensure that ids arent repeated and the form is sent with non duplicate ids
         [string[]]$names = @()
         foreach ($element in $Content) {
             if ($names.Contains($element.Name.ToLower())) {
-                throw "Multiple content elements with the same name present. Theses need to be unique as they are converted to HTML ids."
+                Write-Error -Message  "Multiple content elements with the same name present. Theses need to be unique as they are converted to HTML ids." -ErrorAction Stop
             }
             $names += $element.Name.ToLower()
         }
@@ -102,7 +102,7 @@ function New-PSFormsSimpleForm {
         # Generated Card
 
         # Generate Template Scripts
-        $TemplateFilesParent = Join-Path $PSScriptRoot "internal"
+        $TemplateFilesParent = Join-Path $PSScriptRoot "Private"
         
         $FormPath = Join-Path $TemplateFilesParent "Simple.FormName.Form.ps1"
         $FormOutPath = Join-Path $SiteRoot "Scripts" "$Name.Form.ps1"
@@ -118,7 +118,7 @@ function New-PSFormsSimpleForm {
         $Form = $Form.Replace(':FormName:', $Name).Replace(':Title:', $Header)
         Set-Content -Path $FormOutPath -Value $Form | Out-Null
         
-        Write-Host "Please update the '$Name.Submit.ps1' file with the code that you need to run when the form is submitted."
+        Write-Host "Please update the 'Scripts\$Name.Submit.ps1' file with the code that you need to run when the form is submitted."
         # Generated Template Scripts
         
         # Update RouteImport.ps1
