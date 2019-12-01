@@ -11,6 +11,7 @@ namespace PSFormsClassLib
         public string DisplayName { get; set; }
         public string Tooltip { get; set; }
         public string InputType { get; set; }
+        public bool Required {get; set;}
         public Hashtable Attributes { get; set; }
         
         public PSFormsInput(string name)

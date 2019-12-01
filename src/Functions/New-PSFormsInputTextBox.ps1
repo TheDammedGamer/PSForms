@@ -1,12 +1,13 @@
 function New-PSFormsInputTextBox {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] [ValidateNotNullOrEmpty()] [string] $Name,
-        [Parameter(Position = 1, ValueFromPipelineByPropertyName = $true)] [string]$DisplayName,
-        [Parameter(Position = 2, ValueFromPipelineByPropertyName = $true)] [string]$ToolTip,
-        [Parameter(Position = 3, ValueFromPipelineByPropertyName = $true)] [int]$Rows = 3,
-        [Parameter(Position = 4, ValueFromPipelineByPropertyName = $true)] [int]$Columns = 8,
-        [Parameter(Position = 5, ValueFromPipelineByPropertyName = $true)] [hashtable]$Attributes = @{}
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)] [ValidateNotNullOrEmpty()] [string] $Name,
+        [Parameter(Position = 1)] [string]$DisplayName,
+        [Parameter(Position = 2)] [string]$ToolTip,
+        [Parameter(Position = 3)] [int]$Rows = 3,
+        [Parameter(Position = 4)] [int]$Columns = 8,
+        [Parameter(Position = 5)] [switch]$Required,
+        [Parameter(Position = 6)] [hashtable]$Attributes = @{}
     )
     
     begin {
@@ -25,6 +26,10 @@ function New-PSFormsInputTextBox {
         $item.DisplayName = $DisplayName
         $item.Rows = $Rows
         $item.Columns = $Columns
+        
+        if ($Required.IsPresent) {
+            $item.Required
+        }
         
         if (!([string]::IsNullOrWhiteSpace($ToolTip))) {
             $item.ToolTip = $ToolTip

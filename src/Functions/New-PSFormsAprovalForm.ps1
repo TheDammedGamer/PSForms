@@ -1,8 +1,9 @@
-function New-PSFormsSimpleForm {
+function New-PSFormsAprovalForm {
     [CmdletBinding()]
     param (
         # Form Name
         [Parameter(Mandatory = $true, Position = 0)]
+        [ValidateScript( { $_.Contains([System.IO.Path]::InvalidPathChars) -eq $true } )]
         [string]
         $Name,
         # Form Header
@@ -32,11 +33,6 @@ function New-PSFormsSimpleForm {
     )
 
     begin {
-        # Check That name doesn't contain weird charcters
-        if ([PSFormsClassLib.Helper]::FilePathHasInvalidChars($Name)) {
-            Write-Error -Message "Name Paramater contains Invalid File Path Characters." -Exception [ArgumentException] -ErrorAction Stop
-        }
-        
         # Ensure The Skeleton command has been run
         if (!(Test-Path -Path "$SiteRoot\Start.ps1") -or !(Test-Path -Path "$SiteRoot\Views\Layout.ps1") -or !(Test-Path -Path "$SiteRoot\Static")) {
             Write-Error -Message "Please Ensure that the 'New-PSFomsSite' Command has been run in the Site Root directory." -ErrorAction Stop
@@ -56,35 +52,28 @@ function New-PSFormsSimpleForm {
     process {
         Write-Verbose  "Generating Form"
         $form = Div -Class "form-container" -Content {
-            Write-Verbose " Writing Header"
             header -Content {
                 H1 -Content $Header -Class "display-3"
             }
-            Write-Verbose " Writing Desciption"
-            p -Content $Description
-            Write-Verbose " Writing Form Tag"
+            p -Content $Description -Class
             Form -action "/$Name/Submit" -method "get" -Content {
-                Write-Verbose " Writing Inner Content"
                 foreach ($element in $Content) {
-                    Write-Verbose " Writing Element: $($element.Name)"
-                    ConvertTo-PSFormsPSHTML -GenericObject $element -Verbose
+                    ConvertTo-PSFormsPSHTML -GenericObject $element
                 }
-                Write-Verbose " Writing Submit Button"
                 button -Content "Submit" -Class "btn btn-primary" -Attributes @{type = "submit" }
             }
         }
-        Write-Verbose " Setting Content"
         $Form | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Form.htm") | Out-Null
         Write-Verbose  "Generated Form"
 
         Write-Verbose "Generating Sucess View Content"
-        New-PSFormsViewsContent -AlertType 'light' -AlertMessage "Form Submitted Sucessfully" -Message $SuccessMsg -SiteRoot $SiteRoot -FileName "$Name.Success.htm"
+        New-PSFromsViewsContent -AlertType 'light' -AlertMessage "Form Submitted Sucessfully" -Message $SuccessMsg -SiteRoot $SiteRoot -FileName "$Name.Success.htm"
         
         Write-Verbose "Generating Failure View Template Content"
-        New-PSFormsViewsContent -AlertType 'danger' -AlertMessage "Form Submission Denied" -Message ':reason:' -SiteRoot $SiteRoot -FileName "$Name.Failure.htm"
+        New-PSFromsViewsContent -AlertType 'danger' -AlertMessage "Form Submission Denied" -Message ':reason:' -SiteRoot $SiteRoot -FileName "$Name.Failure.htm"
 
         Write-Verbose "Generating Error View Content"
-        New-PSFormsViewsContent -AlertType 'danger' -AlertMessage "Form not Submitted, an Error Occured." -Message $ErrorMsg -SiteRoot $SiteRoot -FileName "$Name.Error.htm"
+        New-PSFromsViewsContent -AlertType 'danger' -AlertMessage "Form not Submitted, an Error Occured." -Message $ErrorMsg -SiteRoot $SiteRoot -FileName "$Name.Error.htm"
 
         Write-Verbose "Generating From Bootstrap Card"
         New-PSFormsBootstrapCard -Header $Header -Description $Description -Name $Name -SiteRoot $SiteRoot
@@ -104,7 +93,7 @@ function New-PSFormsSimpleForm {
         Write-Verbose "Generated Template Scripts"
         
         Write-Verbose "Update RouteImport.ps1"
-        $RouteImport = @("# $Name Route Import", $(". " + '$PSScriptRoot\' + "$Name.Submit.ps1"), $(". " + '$PSScriptRoot\' + "$Name.Form.ps1") )
+        $RouteImport = @("# '$Name' Route Import", ". .\$Name.Submit.ps1", ". .\$Name.Form.ps1")
         
         Add-Content -Value $RouteImport -Path $(Join-Path -Path $SiteRoot "Scripts" "RouteImport.ps1") | Out-Null
         Write-Verbose "Updated RouteImport.ps1"

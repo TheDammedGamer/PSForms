@@ -1,28 +1,15 @@
 function New-PSFormsInput {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
-        [ValidateNotNullOrEmpty()]
-        [string]$Name,
-
-        [Parameter(Position = 1, ValueFromPipelineByPropertyName = $true)]
-        [string]$DisplayName,
-        
-        [Parameter(Position = 2, ValueFromPipelineByPropertyName = $true)]
-        [ValidateSet("checkbox", "color", "date", "datetime-local", "email", "number", "tel", "text", "time", "url")]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)] [ValidateNotNullOrEmpty()] [string]$Name,
+        [Parameter(Position = 1)] [string]$DisplayName,
+        [Parameter(Position = 2)] [ValidateSet("checkbox", "color", "date", "datetime-local", "email", "number", "tel", "text", "time", "url")]
         [string]$InputType = "text",
-
-        [Parameter(Position = 3, ValueFromPipelineByPropertyName = $true)]
-        [string]$ToolTip,
-        
-        [Parameter(Position = 4, ValueFromPipelineByPropertyName = $true)]
-        [string]$Pattern,
-        
-        [Parameter(Position = 5, ValueFromPipelineByPropertyName = $true)]
-        [string]$Placeholder,
-
-        [Parameter(Position = 6, ValueFromPipelineByPropertyName = $true)]
-        [Hashtable]$Attributes = @{}
+        [Parameter(Position = 3)] [string]$ToolTip,
+        [Parameter(Position = 4)] [string]$Pattern,
+        [Parameter(Position = 5)] [string]$Placeholder,
+        [Parameter(Position = 6)] [switch]$Required,
+        [Parameter(Position = 7)] [Hashtable]$Attributes = @{ }
     )
     
     begin {
@@ -31,16 +18,17 @@ function New-PSFormsInput {
         }
         if ([string]::IsNullOrWhiteSpace($DisplayName)) {
             $DisplayName = $Name + ":"
-        } else {
+        }
+        else {
             $DisplayName = $DisplayName + ":"
         }
         
         if (!([string]::IsNullOrWhiteSpace($Pattern))) {
-            $Attributes += @{"pattern" = $Pattern}
+            $Attributes += @{"pattern" = $Pattern }
         }
         
         if (!([string]::IsNullOrWhiteSpace($Placeholder))) {
-            $Attributes += @{"placeholder" = $Placeholder}
+            $Attributes += @{"placeholder" = $Placeholder }
         }
     }
     
@@ -49,6 +37,10 @@ function New-PSFormsInput {
         $item.DisplayName = $DisplayName
         $item.InputType = $InputType
         $item.Attributes = $Attributes
+        
+        if ($Required.IsPresent) {
+            $item.Required
+        }
         
         if (!([string]::IsNullOrWhiteSpace($ToolTip))) {
             $item.ToolTip = $ToolTip

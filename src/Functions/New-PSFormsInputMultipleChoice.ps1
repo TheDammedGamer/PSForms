@@ -1,22 +1,12 @@
 function New-PSFormsInputMultipleChoice {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
-        [ValidateNotNullOrEmpty()]
-        [string]$Name,
-
-        [Parameter(Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $true)]
-        [ValidateNotNullOrEmpty()]
-        [string[]]$Options,
-
-        [Parameter(Position = 2, ValueFromPipelineByPropertyName = $true)]
-        [string]$DisplayName,
-
-        [Parameter(Position = 3, ValueFromPipelineByPropertyName = $true)]
-        [string]$ToolTip,
-
-        [Parameter(Position = 4, ValueFromPipelineByPropertyName = $true)]
-        [Hashtable]$Attributes = @{}
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)] [ValidateNotNullOrEmpty()] [string]$Name,
+        [Parameter(Mandatory = $true, Position = 1)] [ValidateNotNullOrEmpty()] [string[]]$Options,
+        [Parameter(Position = 2)] [string]$DisplayName,
+        [Parameter(Position = 3)] [string]$ToolTip,
+        [Parameter(Position = 4)] [switch]$Required,
+        [Parameter(Position = 5)] [Hashtable]$Attributes = @{ }
     )
     
     begin {
@@ -25,7 +15,8 @@ function New-PSFormsInputMultipleChoice {
         }
         if ([string]::IsNullOrWhiteSpace($DisplayName)) {
             $DisplayName = $Name + ":"
-        } else {
+        }
+        else {
             $DisplayName = $DisplayName + ":"
         }
         
@@ -39,6 +30,10 @@ function New-PSFormsInputMultipleChoice {
         $item.DisplayName = $DisplayName
         $item.Options = $Options
         $item.Attributes = $Attributes
+        
+        if ($Required.IsPresent) {
+            $item.Required
+        }
         
         if (!([string]::IsNullOrWhiteSpace($ToolTip))) {
             $item.ToolTip = $ToolTip

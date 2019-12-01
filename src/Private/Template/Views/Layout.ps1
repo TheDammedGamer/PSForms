@@ -13,7 +13,7 @@ html -Attributes @{lang="en"} {
         #Import Bootstrap
         Link -rel 'stylesheet' -href "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" -Integrity "sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" -CrossOrigin "anonymous"
 
-        Link -rel 'stylesheet' -href "./static/default.css"
+        Link -rel 'stylesheet' -href "/Static/default.css"
 
         Title -Content $Title
     }
@@ -34,11 +34,10 @@ html -Attributes @{lang="en"} {
                 }
             }
         }
-
-
-        # Import Partial HTML as pecified in an argument
+        
+        # Import Partial HTML as specified by $ContentPath
         $PartialHTML = Get-Content -Path $ContentPath -Debug
-        Div -Id "container" -Content $PartialHTML -Attributes @{role="main"} -Debug
+        Div -Id "container" -Content $PartialHTML -Attributes @{role="main"}
 
         # Sticky Footer Element
         footer -Class "footer fixed-bottom bg-dark" -Content {

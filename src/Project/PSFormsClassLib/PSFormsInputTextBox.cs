@@ -14,6 +14,7 @@ namespace PSFormsClassLib
         public Hashtable Attributes { get; set; }
         public int Rows { get; set; }
         public int Columns { get; set; }
+        public bool Required {get; set;}
         public PSFormsInputTextBox(string name)
         {
             Name = name;

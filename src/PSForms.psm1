@@ -1,6 +1,8 @@
 # Private Functions
 . $PSScriptRoot\Private\Functions\ConvertTo-PSFormsPSHTML.ps1
 . $PSScriptRoot\Private\Functions\New-PSFormsBootstrapCard.ps1
+. $PSScriptRoot\Private\Functions\Copy-PSFormsTemplateFile.ps1
+. $PSScriptRoot\Private\Functions\New-PSFormsViewsContent.ps1
 
 # Public Functions
 . $PSScriptRoot\Functions\Get-PSFormsResult.ps1

@@ -6,12 +6,13 @@ using System.Text;
 
 namespace PSFormsClassLib
 {
-    class PSFormsInputMultiple
+    public class PSFormsInputMultiple
     {
         public string Name { get; private set; }
         public string DisplayName { get; set; }
-        public string TooltTip { get; set; }
+        public string ToolTip { get; set; }
         public string[] Options { get; set; }
+        public bool Required {get; set;}
         public Hashtable Attributes { get; set; }
 
 

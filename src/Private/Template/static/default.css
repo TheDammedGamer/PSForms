@@ -10,3 +10,12 @@
 .card-width {
     width: 18rem;
 }
+#container {
+    padding-left: 20%;
+    padding-right: 20%;
+    margin-top: 70px;
+    margin-bottom: 5rem;
+}
+.form-container {
+    
+}

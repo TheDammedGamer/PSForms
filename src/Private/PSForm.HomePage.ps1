@@ -1,8 +1,11 @@
 
 $homeHTML = div -Class "homeBody" -Content {
-    h1 -Content "The Site Name"
-    
-    p -Content "This is a Sample Home Page that needs to be edited:"
+    Div -Class "jumbotron" -Content {
+        H1 -Class "display-4" -Content ":SiteName:"
+        p -Class "lead" -Content ":Company:'s IT Department's Web Form Site."
+        hr -Class "my-4"
+        p -Content "If you have any issue using these Forms, please report them to the IT Service Desk"
+    }
     
     p -Content "Below are the Forms that we currently have avaliable:"
     
@@ -12,9 +15,6 @@ $homeHTML = div -Class "homeBody" -Content {
         }
     }
 }
-
-
-
 
 $Out = .\Views\Layout.ps1 -ContentPath $homeHTML -Title "Home"
 

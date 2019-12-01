@@ -40,10 +40,13 @@ The `Start.ps1` will start the Polaris Server accoding to the default settings i
 ## Ideas
 Aproval requires a GUID generated at request time which relates to a json file (e.g. `.\Approval\UpdateMobileNumber.c0aab650-f29c-4870-b0fb-4b0b19d4d449.json`) where the data needed for the script will be stored. This file will be created within the submit script.
 
+Insert the GUID in a form as a Hidden Field with `ID=GUID` 
+
 ### Routes
-- `/$FormName/`= The Form
-- `/$FormName/Submit` = The enpoint to submit the form
-- `/$FormName/Approve?request=$GUID` = Optional Endpoint for when needing form approval
+- `/$FormName` - The Form
+- `/$FormName/Submit` - The enpoint to submit the form
+- `/$FormName/Approve?request=$GUID` - Optional Endpoint for when needing form approval
+- `/$FormName/Approve/Submit?GUID=$GUID;Option=Yes` - Optiona Endpoint for when the Approval has been submited
 
 ### Site Layout:
 - `.\Views\` - ps1 template files used to genrate the layout files.
@@ -51,13 +54,16 @@ Aproval requires a GUID generated at request time which relates to a json file (
     - `.\Views\$FormName.Form.htm` - The form definition stored as HTML
     - `.\Views\$FormName.Sucess.htm` - The Sucess Page for when a form is sucessfully submitted.
     - `.\Views\$FormName.Error.htm` - The Error Page for when a form errors.
-    - `.\Views\$FormName.Approve.htm` - The Approval page template.
+    - `.\Views\$FormName.Approve.Form.htm` - The Approval page template.
+    - `.\Views\$FormName.Approve.Submit.Approve.htm` - Approval Aproved HTML Template 
+    - `.\Views\$FormName.Approve.Submit.Deny.htm` - Approval Denied HTML Template
 - `.\Scripts\` - Where the Scripts used to drive the forms will be located.
     - `.\Scripts\RouteImport.ps1` - Auto generated to import all other Scripts
     - `.\Scripts\$FormName.Form.ps1` - Auto generated but can be updated
-    - `.\Scripts\$FormName.Submit.ps1` - To Edit by the Admin to actually do something
-    - `.\Scripts\$FormName.Approve.ps1` - Optional defines the Approval actions
-- `.\Cards\` - Where generated form description cards are located.
+    - `.\Scripts\$FormName.Submit.ps1` - To Edit by the Admin to actually do something and then returns the correct view template.
+    - `.\Scripts\$FormName.Approve.ps1` - Optionally defines the Approval Form
+    - `.\Scripts\$FormName.Approve.Submit.ps1` - Optionally defines the Approval Action and returns the correct view template.
+- `.\Cards\` - Where generated form description cards are located to be loaded in a HomePage if required.
     - `.\Cards\$FormName.htm`
 - `.\Approval\` - Where approval json files are stored.
     - `.\Approval\$FormName.$GUID.json`
