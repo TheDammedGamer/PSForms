@@ -22,6 +22,7 @@
     <file source="Views\Layout.ps1" destination="" />
     
     <file source="Scripts\RouteImport.ps1" destination="Scripts\RouteImport.ps1" />
+    <templateFile source='Scripts\SiteRoot.Middleware.ps1' destination=''/>
     <file source="Static\default.css" destination="Static\default.css" />
     <file source="config.json" destination="config.json" />
     <file source="Polaris.Start.ps1" destination="Start.ps1" />
