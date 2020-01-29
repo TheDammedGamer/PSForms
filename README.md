@@ -6,8 +6,10 @@ A Simple way to generate Forms to via PowerShell, [PSHTML][1] and run them with 
 
 ## Installation
 
-Currently, the only way is to build form source, I will be uploading to the PowerShell gallery shortly
+Currently, the only way is to build from source.
 
+Clone the repo locally and then run `build.ps1`, the module will be built into the `Build` Folder.
+ 
 ## Examples
 
 ``` PowerShell
@@ -23,7 +25,7 @@ $Content += New-PSFormsInputMultipleChoice -Name "office" -DisplayName "Your Mai
 New-PSFormsSimpleForm -Name "DetailsUpdate" -Header "Update your Details" -Description "Use this form to update your details in Outlook and the Staff Directory." -Content $Content -SucessMsg "Your Details have been updated, this may take up to 5 days to roll out to everyone in the organisation." -ErrorMsg "Something went wrong, Please contact the service Desk on 'Some Number' for assitance." -SiteRoot 'D:\PSFormsSite\'
 ```
 
-The above example creates a new PSForms site with a simple form tto update people's contact detaisl. This example is missing the implmentation, which needs to be setup inside `D:\PSFormsSite\Scripts\DetailsUpdate.Submit.ps1` so that Polaris will process the result of the form.
+The above example creates a new PSForms site with a simple form to update people's contact details. This example is missing the implmentation, which needs to be setup inside `D:\PSFormsSite\Scripts\DetailsUpdate.Submit.ps1`.
 
 ``` PowerShell
 D:\PSFormsSite\Start.ps1
@@ -33,11 +35,9 @@ The `Start.ps1` will start the Polaris Server accoding to the default settings i
 
 ## [Changelog](Changelog.md)
 
-## To Do
-- [ ] `New-PSFomsHomePage` - Adds an optional homepage template that will be used as the default route endpoint e.g. `http:://servername:port/`
+## [Todo](Todo.md)
 
-
-## Ideas
+## Random Ideas
 Aproval requires a GUID generated at request time which relates to a json file (e.g. `.\Approval\UpdateMobileNumber.c0aab650-f29c-4870-b0fb-4b0b19d4d449.json`) where the data needed for the script will be stored. This file will be created within the submit script.
 
 Insert the GUID in a form as a Hidden Field with `ID=GUID` 

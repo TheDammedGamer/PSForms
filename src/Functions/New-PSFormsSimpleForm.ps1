@@ -34,7 +34,7 @@ function New-PSFormsSimpleForm {
     begin {
         # Check That name doesn't contain weird charcters
         if ([PSFormsClassLib.Helper]::FilePathHasInvalidChars($Name)) {
-            Write-Error -Message "Name Paramater contains Invalid File Path Characters." -Exception [ArgumentException] -ErrorAction Stop
+            Write-Error -Message "Name Paramater contains Invalid File Path Characters." -Exception [ArgumentException]::new("Name Paramater contains Invalid File Path Characters.") -ErrorAction Stop
         }
         
         # Ensure The Skeleton command has been run
@@ -54,6 +54,23 @@ function New-PSFormsSimpleForm {
     }
 
     process {
+        $formObj = @{
+            Name        = $Name
+            Header      = $Header
+            Description = $Description
+            Sucess      = $SuccessMsg
+            Error       = $ErrorMsg
+            Content     = @()
+        }
+        foreach ($element in $Content) {
+            $formObj.Content += $element
+        }
+        $formPath = Join-Path $SiteRoot "Form" "$Name.xml"
+        $formObj | Export-Clixml -Path $formPath -Encoding utf8
+        
+        
+        
+        
         Write-Verbose  "Generating Form"
         $form = Div -Class "form-container" -Content {
             Write-Verbose " Writing Header"
@@ -73,6 +90,7 @@ function New-PSFormsSimpleForm {
                 button -Content "Submit" -Class "btn btn-primary" -Attributes @{type = "submit" }
             }
         }
+        
         Write-Verbose " Setting Content"
         $Form | Set-Content -Path $(Join-Path -Path $SiteRoot "Views" "$Name.Form.htm") | Out-Null
         Write-Verbose  "Generated Form"
@@ -92,19 +110,19 @@ function New-PSFormsSimpleForm {
         Write-Verbose "Generate Template Scripts"
         Copy-PSFormsTemplateFile -Name "$Name.Form.ps1" -SiteRoot $SiteRoot -FormType "Simple.FormName.Form.ps1" -Replacements @{
             ":FormName:" = $Name
-            ":Title:"   = $Header
+            ":Title:"    = $Header
         }
         
         Copy-PSFormsTemplateFile -Name "$Name.Submit.ps1" -SiteRoot $SiteRoot -FormType "Simple.FormName.Submit.ps1" -Replacements @{
             ":FormName:" = $Name
-            ":Title:"   = $Header
+            ":Title:"    = $Header
         }
         
         Write-Host "Please update the 'Scripts\$Name.Submit.ps1' file with the code to run, when the form is submitted."
         Write-Verbose "Generated Template Scripts"
         
         Write-Verbose "Update RouteImport.ps1"
-        $RouteImport = @("# $Name Route Import", $(". " + '$PSScriptRoot\' + "$Name.Submit.ps1"), $(". " + '$PSScriptRoot\' + "$Name.Form.ps1") )
+        $RouteImport = @("# $Name Route Import", $('. $PSScriptRoot\' + "$Name.Submit.ps1"), $('. $PSScriptRoot\' + "$Name.Form.ps1") )
         
         Add-Content -Value $RouteImport -Path $(Join-Path -Path $SiteRoot "Scripts" "RouteImport.ps1") | Out-Null
         Write-Verbose "Updated RouteImport.ps1"

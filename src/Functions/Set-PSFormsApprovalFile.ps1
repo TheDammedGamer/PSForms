@@ -17,12 +17,20 @@ function Set-PSFormsApprovalFile {
         # The name of the form
         [Parameter(Mandatory=$true, HelpMessage="The name of the form")]
         [string]
-        $FormName
+        $FormName,
+        # The Original Form Object
+        [Parameter(Mandatory=$true, HelpMessage="The original form content")]
+        [System.Object]
+        $OriginalForm
     )
     
     process {
-        $ApprovalPath =  Join-Path $SiteRoot "\Approval\$FormName.$GUID.json" 
+        $ApprovalPath =  Join-Path $SiteRoot "Approval" "$FormName.$GUID.json" 
         
-        $ApprovalParameters | ConvertTo-Json | Set-Content $ApprovalPath
+        $Hash = @{
+            ApprovalParams=$ApprovalParameters
+            OriginalForm=$OriginalForm
+        }
+        $Hash | ConvertTo-Json | Set-Content $ApprovalPath
     }
 }
